@@ -1,0 +1,98 @@
+{
+  "artifactId" : "data-residency-guard",
+  "resourceId" : "6ab8be6ce96bfe35d5e8a0ad",
+  "generatedAt" : "2026-09-27T07:05:53.878139992Z",
+  "mock" : {
+    "id" : "bc30ccee-033d-4efd-b117-ec8e126068b7",
+    "microserviceId" : null,
+    "specMetadataId" : "6ab8bf3e3e03191c3944de56",
+    "apiSpecName" : "Data Residency Guard",
+    "name" : "mock-data-residency-guard",
+    "mockServiceName" : "mock-data-residency-guard",
+    "mockServerUrl" : "https://forgesphere.probestack.io/mock-api/v1/api/mocks/mock-cd8190de",
+    "mockUrl" : "mock-cd8190de",
+    "isPrivate" : false,
+    "delayMs" : 210,
+    "responseLatencyMs" : 210,
+    "requestCount" : 4,
+    "createdAt" : "2026-09-27T07:02:13.783Z",
+    "updatedAt" : "2026-09-27T07:02:19.596Z"
+  },
+  "endpoints" : [ {
+    "id" : "84d465ec-8ce6-483b-9a7e-8bb91f4e3dcf",
+    "isActive" : true,
+    "request" : {
+      "method" : "POST",
+      "path" : "/policies",
+      "bodySample" : "{\"policyName\":\"eu-customer-data-gdpr\",\"description\":\"EU customer PII must remain in EU regions per GDPR Art. 44-50.\",\"dataClassification\":\"PII\",\"regulatoryFramework\":\"GDPR\",\"allowedRegions\":[\"eu-west-1\",\"eu-central-1\",\"eu-north-1\"],\"prohibitedRegions\":[\"us-east-1\",\"us-west-2\",\"ap-south-1\"],\"allowedTransfers\":[{\"destinationRegion\":\"us-east-1\",\"mechanism\":\"STANDARD_CONTRACTUAL_CLAUSES\",\"approvalReference\":\"DPA-2026-001\"}],\"enforcementMode\":\"BLOCK\",\"dataSubjectCountries\":[\"DE\",\"FR\",\"IT\",\"ES\",\"NL\"],\"owner\":\"privacy-office@forgesphere.example.com\",\"approvers\":[\"dpo@forgesphere.example.com\",\"legal@forgesphere.example.com\"],\"retentionDays\":2555,\"tags\":[\"gdpr\",\"pii\",\"eu\",\"schrems-ii\"]}",
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 201,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"policyId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"policyName\":\"eu-customer-data-gdpr\",\"description\":\"EU customer PII must remain in EU regions per GDPR Art. 44-50.\",\"dataClassification\":\"PII\",\"regulatoryFramework\":\"GDPR\",\"allowedRegions\":[\"eu-west-1\",\"eu-central-1\",\"eu-north-1\"],\"prohibitedRegions\":[\"us-east-1\",\"us-west-2\"],\"allowedTransfers\":[{\"destinationRegion\":\"us-east-1\",\"mechanism\":\"STANDARD_CONTRACTUAL_CLAUSES\",\"approvalReference\":\"DPA-2026-001\"}],\"enforcementMode\":\"BLOCK\",\"dataSubjectCountries\":[\"DE\",\"FR\",\"IT\",\"ES\",\"NL\"],\"status\":\"ACTIVE\",\"owner\":\"privacy-office@forgesphere.example.com\",\"approvers\":[\"string\"],\"approvedBy\":[\"dpo@forgesphere.example.com\"],\"approvedAt\":\"2024-01-01T00:00:00Z\",\"retentionDays\":2555,\"tags\":[\"gdpr\",\"pii\",\"eu\",\"schrems-ii\"],\"createdAt\":\"2024-01-01T00:00:00Z\",\"updatedAt\":\"2024-01-01T00:00:00Z\",\"enforcementCount30d\":342,\"blockedCount30d\":47}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "02c8e8c4-b208-49f0-8ba1-3ba3ce02126b",
+    "isActive" : true,
+    "request" : {
+      "method" : "POST",
+      "path" : "/check",
+      "bodySample" : "{\"dataClassification\":\"PII\",\"sourceRegion\":\"eu-west-1\",\"destinationRegion\":\"us-east-1\",\"operation\":\"ML_TRAINING\",\"subject\":{\"tenantId\":\"tenant-acme-eu\",\"dataSubjectCountry\":\"DE\",\"recordCount\":45000},\"purpose\":\"Fraud detection model training\",\"requestingService\":\"ml-platform\",\"correlationId\":\"a1b2c3d4-e5f6-7890-1234-567890abcdef\"}",
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 200,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"decisionId\":\"a1b2c3d4-e5f6-7890-1234-567890abcdef\",\"decision\":\"BLOCK\",\"legalBasis\":{\"policyId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"policyName\":\"eu-customer-data-gdpr\",\"regulatoryFramework\":\"GDPR\",\"regulationArticle\":\"GDPR Art. 44 — General principle for transfers\",\"reasoning\":\"EU PII cannot be transferred to us-east-1 without Standard Contractual Clauses. No valid SCC found in policy.\"},\"suggestedAlternatives\":[{\"alternative\":\"USE_ALLOWED_REGION\",\"detail\":\"Route ML training to eu-central-1 (already allowed).\",\"latencyImpactMs\":15,\"costImpactUSDPerMonth\":120.0}],\"autoRoutedTo\":\"eu-central-1\",\"metadata\":{\"dataClassification\":\"PII\",\"sourceRegion\":\"eu-west-1\",\"destinationRegion\":\"us-east-1\",\"operation\":\"ML_TRAINING\",\"requestingService\":\"ml-platform\",\"recordCount\":45000},\"auditReference\":\"audit://residency/a1b2c3d4\",\"evaluatedAt\":\"2024-01-01T00:00:00Z\",\"latencyMs\":14}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "a1bca188-ba5c-42d2-bba3-e0d8fdafa839",
+    "isActive" : true,
+    "request" : {
+      "method" : "GET",
+      "path" : "/map",
+      "bodySample" : null,
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 200,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"generatedAt\":\"2024-01-01T00:00:00Z\",\"totalComplianceScore\":94.5,\"regions\":[{\"region\":\"eu-west-1\",\"provider\":\"AWS\",\"jurisdiction\":\"European Union\",\"adequacyStatus\":\"ADEQUATE\",\"storageUsedBytes\":1284500000000,\"dataClassificationCounts\":{\"PII\":45000000,\"PCI\":12000000,\"FINANCIAL\":8500000},\"activePolicies\":[\"eu-customer-data-gdpr\"],\"complianceStatus\":\"COMPLIANT\",\"lastVerifiedAt\":\"2024-01-01T00:00:00Z\"}],\"violations\":[{\"violationId\":\"b1a2c3d4-e5f6-7890-1234-567890abcdef\",\"severity\":\"CRITICAL\",\"policyName\":\"eu-customer-data-gdpr\",\"detail\":\"1.2M EU PII records found in us-east-1 replica set.\",\"affectedRecords\":1200000,\"detectedAt\":\"2024-01-01T00:00:00Z\",\"remediationStatus\":\"IN_PROGRESS\"}],\"policiesSummary\":[{\"policyName\":\"eu-customer-data-gdpr\",\"framework\":\"GDPR\",\"enforcementMode\":\"BLOCK\",\"decisionsLast24h\":45200,\"blockedLast24h\":42}]}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "1bcc0026-be51-4160-b351-84adfe1fbc4c",
+    "isActive" : true,
+    "request" : {
+      "method" : "POST",
+      "path" : "/audit/evidence",
+      "bodySample" : "{\"framework\":\"GDPR\",\"periodFrom\":\"2026-01-01T00:00:00.000+00:00\",\"periodTo\":\"2026-09-30T00:00:00.000+00:00\",\"outputFormat\":\"PDF\",\"includeRawDecisions\":false,\"includeTransferMechanisms\":true,\"signReport\":true}",
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 202,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"evidenceId\":\"d1a2c3d4-e5f6-7890-1234-567890abcdef\",\"framework\":\"GDPR\",\"periodFrom\":\"2024-01-01\",\"periodTo\":\"2024-01-01\",\"status\":\"COLLECTING\",\"requestedAt\":\"2024-01-01T00:00:00Z\",\"completedAt\":\"2024-01-01T00:00:00Z\",\"progressPercent\":45,\"outputFormat\":\"PDF\",\"summary\":{\"totalDecisions\":1820000,\"allowedDecisions\":1819600,\"blockedDecisions\":400,\"warnedDecisions\":0,\"totalDataSubjectsCovered\":450000,\"countriesCovered\":[\"DE\",\"FR\",\"IT\",\"ES\",\"NL\"]},\"transferMechanisms\":[{\"mechanism\":\"STANDARD_CONTRACTUAL_CLAUSES\",\"destinationCountries\":[\"US\",\"GB\",\"CH\"],\"approvalReference\":\"DPA-2026-001\",\"usageCount\":12840}],\"reportDownloadUrl\":\"https://storage.googleapis.com/residency-evidence/gdpr-2026-q3.pdf\",\"reportSignature\":{\"algorithm\":\"SHA256_RSA\",\"sha256Hash\":\"3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b\",\"signedBy\":\"dpo@forgesphere.example.com\",\"signedAt\":\"2024-01-01T00:00:00Z\"},\"evidenceVaultReference\":\"compliance-evidence://gdpr/Art44/residency-q3-2026\",\"errorMessage\":\"string\"}",
+      "delayMs" : 0
+    }
+  } ]
+}

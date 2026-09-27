@@ -1,0 +1,1322 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: data-sovereignty@forgesphere.example.com
+    name: ForgeSphere Data Sovereignty Team
+  description: "Data sovereignty and cross-border transfer enforcement for the ForgeSphere\
+    \ \nplatform. Ensures every byte of customer data stays within its legally \n\
+    mandated geographic boundary. Blocks unauthorized cross-region movement, \nenforces\
+    \ GDPR/Schrems II/DPDP/HIPAA/PIPL data residency rules, and generates \naudit-grade\
+    \ compliance evidence for regulators and enterprise customers.\n"
+  title: Data Residency Guard
+  version: 1.0.0
+servers:
+- description: Production Server
+  url: https://residency.forgesphere.lightning.com/v1
+- description: Local Development Server
+  url: http://localhost:8124/v1
+security:
+- bearerAuth: []
+tags:
+- description: "Define, enforce, and audit data residency policies."
+  name: Residency
+paths:
+  /policies:
+    post:
+      description: "Registers a residency policy that binds a data classification\
+        \ + \nregulatory framework to a set of allowed regions. Once active, any \n\
+        attempt to move that data outside the allowed regions is blocked \nat the\
+        \ enforcement point (sidecar, gateway, or storage layer).\n"
+      operationId: defineResidencyPolicy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/defineResidencyPolicy_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResidencyPolicy"
+          description: Residency policy registered.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: "Invalid payload, missing fields, or conflicting regions."
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: A policy with this name already exists.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Enforcement sidecar or evidence engine unavailable.
+      summary: Define a new data residency policy
+      tags:
+      - Residency
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Residency
+  /check:
+    post:
+      description: "The critical enforcement endpoint — called synchronously before\
+        \ any \ncross-region data operation (replication, backup, cache population,\
+        \ \nanalytics export, ML training, CDN push). Returns ALLOW / BLOCK / \nAUTO_ROUTE\
+        \ with the governing policy and legal basis. Latency <20ms \nwith local caching.\n"
+      operationId: checkDataMovement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/checkDataMovement_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MovementDecision"
+          description: Movement decision with legal basis.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: "Invalid payload, missing fields, or conflicting regions."
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Enforcement sidecar or evidence engine unavailable.
+      summary: Check if a proposed data movement is allowed
+      tags:
+      - Residency
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Residency
+  /map:
+    get:
+      description: "Returns a geographic view of all data storage and processing locations,\
+        \ \ngrouped by region. Includes compliance status per region, active \npolicies,\
+        \ data volumes, and any residency violations in progress. \nPowers the \"\
+        data sovereignty dashboard\" for legal & security teams.\n"
+      operationId: getResidencyMap
+      parameters:
+      - example: PII
+        explode: true
+        in: query
+        name: dataClassification
+        required: false
+        schema:
+          enum:
+          - PII
+          - PHI
+          - PCI
+          - FINANCIAL
+          - CUSTOMER_CONTENT
+          - AUTHENTICATION
+          - TELEMETRY
+          - PUBLIC
+          - INTERNAL
+          type: string
+        style: form
+      - example: true
+        explode: true
+        in: query
+        name: includeViolations
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      - example: GDPR
+        explode: true
+        in: query
+        name: framework
+        required: false
+        schema:
+          enum:
+          - GDPR
+          - SCHREMS_II
+          - DPDP_INDIA
+          - HIPAA
+          - PIPL_CHINA
+          - LGPD_BRAZIL
+          - PIPEDA_CANADA
+          - APPI_JAPAN
+          - POPIA_SOUTH_AFRICA
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResidencyMap"
+          description: Geographic residency map with compliance status.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Enforcement sidecar or evidence engine unavailable.
+      summary: Get a live map of where data resides across the platform
+      tags:
+      - Residency
+      x-accepts: application/json
+      x-tags:
+      - tag: Residency
+  /audit/evidence:
+    post:
+      description: "Produces a signed, tamper-proof report proving data residency\
+        \ \ncompliance for a given framework and period. Accepted by regulators, \n\
+        enterprise auditors, and customers performing due diligence. \nAutomatically\
+        \ cross-referenced with Compliance Evidence Vault.\n"
+      operationId: generateAuditEvidence
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/generateAuditEvidence_request"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResidencyEvidence"
+          description: Evidence generation queued.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: "Invalid payload, missing fields, or conflicting regions."
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Enforcement sidecar or evidence engine unavailable.
+      summary: Generate audit-grade residency compliance evidence
+      tags:
+      - Residency
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Residency
+components:
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: "Invalid payload, missing fields, or conflicting regions."
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Policy or evidence ID not found.
+    InternalError:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Enforcement sidecar or evidence engine unavailable.
+  schemas:
+    ResidencyPolicy:
+      example:
+        prohibitedRegions:
+        - us-east-1
+        - us-west-2
+        owner: privacy-office@forgesphere.example.com
+        policyName: eu-customer-data-gdpr
+        allowedTransfers:
+        - destinationRegion: us-east-1
+          approvalReference: DPA-2026-001
+          mechanism: STANDARD_CONTRACTUAL_CLAUSES
+        - destinationRegion: us-east-1
+          approvalReference: DPA-2026-001
+          mechanism: STANDARD_CONTRACTUAL_CLAUSES
+        enforcementCount30d: 342
+        approvedBy:
+        - dpo@forgesphere.example.com
+        description: EU customer PII must remain in EU regions per GDPR Art. 44-50.
+        approvers:
+        - approvers
+        - approvers
+        enforcementMode: BLOCK
+        dataSubjectCountries:
+        - DE
+        - FR
+        - IT
+        - ES
+        - NL
+        approvedAt: 2000-01-23T04:56:07.000+00:00
+        allowedRegions:
+        - eu-west-1
+        - eu-central-1
+        - eu-north-1
+        tags:
+        - gdpr
+        - pii
+        - eu
+        - schrems-ii
+        blockedCount30d: 47
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        policyId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+        retentionDays: 2555
+        dataClassification: PII
+        regulatoryFramework: GDPR
+        status: ACTIVE
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        policyId:
+          example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          format: uuid
+          type: string
+        policyName:
+          example: eu-customer-data-gdpr
+          type: string
+        description:
+          example: EU customer PII must remain in EU regions per GDPR Art. 44-50.
+          type: string
+        dataClassification:
+          enum:
+          - PII
+          - PHI
+          - PCI
+          - FINANCIAL
+          - CUSTOMER_CONTENT
+          - AUTHENTICATION
+          - TELEMETRY
+          - PUBLIC
+          - INTERNAL
+          example: PII
+          type: string
+        regulatoryFramework:
+          enum:
+          - GDPR
+          - SCHREMS_II
+          - DPDP_INDIA
+          - HIPAA
+          - PIPL_CHINA
+          - LGPD_BRAZIL
+          - PIPEDA_CANADA
+          - APPI_JAPAN
+          - POPIA_SOUTH_AFRICA
+          - NONE
+          example: GDPR
+          type: string
+        allowedRegions:
+          example:
+          - eu-west-1
+          - eu-central-1
+          - eu-north-1
+          items:
+            type: string
+          type: array
+        prohibitedRegions:
+          example:
+          - us-east-1
+          - us-west-2
+          items:
+            type: string
+          type: array
+        allowedTransfers:
+          items:
+            $ref: "#/components/schemas/ResidencyPolicy_allowedTransfers_inner"
+          type: array
+        enforcementMode:
+          enum:
+          - BLOCK
+          - AUDIT_ONLY
+          - WARN
+          - AUTO_ROUTE
+          example: BLOCK
+          type: string
+        dataSubjectCountries:
+          example:
+          - DE
+          - FR
+          - IT
+          - ES
+          - NL
+          items:
+            type: string
+          type: array
+        status:
+          enum:
+          - DRAFT
+          - PENDING_APPROVAL
+          - ACTIVE
+          - SUSPENDED
+          - RETIRED
+          example: ACTIVE
+          type: string
+        owner:
+          example: privacy-office@forgesphere.example.com
+          type: string
+        approvers:
+          items:
+            type: string
+          type: array
+        approvedBy:
+          example:
+          - dpo@forgesphere.example.com
+          items:
+            type: string
+          type: array
+        approvedAt:
+          format: date-time
+          type: string
+        retentionDays:
+          example: 2555
+          type: integer
+        tags:
+          example:
+          - gdpr
+          - pii
+          - eu
+          - schrems-ii
+          items:
+            type: string
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        enforcementCount30d:
+          description: How many times this policy blocked/audited a movement.
+          example: 342
+          type: integer
+        blockedCount30d:
+          example: 47
+          type: integer
+      required:
+      - allowedRegions
+      - createdAt
+      - dataClassification
+      - enforcementMode
+      - policyId
+      - policyName
+      - regulatoryFramework
+      - status
+      type: object
+    MovementDecision:
+      example:
+        autoRoutedTo: eu-central-1
+        auditReference: audit://residency/a1b2c3d4
+        metadata:
+          destinationRegion: us-east-1
+          dataClassification: PII
+          requestingService: ml-platform
+          recordCount: 45000
+          sourceRegion: eu-west-1
+          operation: ML_TRAINING
+        decision: BLOCK
+        suggestedAlternatives:
+        - alternative: USE_ALLOWED_REGION
+          costImpactUSDPerMonth: 120.0
+          detail: Route ML training to eu-central-1 (already allowed).
+          latencyImpactMs: 15
+        - alternative: USE_ALLOWED_REGION
+          costImpactUSDPerMonth: 120.0
+          detail: Route ML training to eu-central-1 (already allowed).
+          latencyImpactMs: 15
+        legalBasis:
+          policyId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          policyName: eu-customer-data-gdpr
+          regulationArticle: GDPR Art. 44 — General principle for transfers
+          reasoning: EU PII cannot be transferred to us-east-1 without Standard Contractual
+            Clauses. No valid SCC found in policy.
+          regulatoryFramework: GDPR
+        decisionId: a1b2c3d4-e5f6-7890-1234-567890abcdef
+        evaluatedAt: 2000-01-23T04:56:07.000+00:00
+        latencyMs: 14
+      properties:
+        decisionId:
+          example: a1b2c3d4-e5f6-7890-1234-567890abcdef
+          format: uuid
+          type: string
+        decision:
+          enum:
+          - ALLOW
+          - BLOCK
+          - WARN
+          - AUTO_ROUTE
+          example: BLOCK
+          type: string
+        legalBasis:
+          $ref: "#/components/schemas/MovementDecision_legalBasis"
+        suggestedAlternatives:
+          description: "If blocked, what CAN be done."
+          items:
+            $ref: "#/components/schemas/MovementDecision_suggestedAlternatives_inner"
+          type: array
+        autoRoutedTo:
+          description: "If decision = AUTO_ROUTE, the region used."
+          example: eu-central-1
+          type: string
+        metadata:
+          $ref: "#/components/schemas/MovementDecision_metadata"
+        auditReference:
+          example: audit://residency/a1b2c3d4
+          type: string
+        evaluatedAt:
+          format: date-time
+          type: string
+        latencyMs:
+          example: 14
+          type: integer
+      required:
+      - decision
+      - decisionId
+      - evaluatedAt
+      - latencyMs
+      - legalBasis
+      type: object
+    ResidencyMap:
+      example:
+        regions:
+        - provider: AWS
+          dataClassificationCounts:
+            PII: 45000000
+            PCI: 12000000
+            FINANCIAL: 8500000
+          jurisdiction: European Union
+          activePolicies:
+          - eu-customer-data-gdpr
+          complianceStatus: COMPLIANT
+          adequacyStatus: ADEQUATE
+          storageUsedBytes: 1284500000000
+          lastVerifiedAt: 2000-01-23T04:56:07.000+00:00
+          region: eu-west-1
+        - provider: AWS
+          dataClassificationCounts:
+            PII: 45000000
+            PCI: 12000000
+            FINANCIAL: 8500000
+          jurisdiction: European Union
+          activePolicies:
+          - eu-customer-data-gdpr
+          complianceStatus: COMPLIANT
+          adequacyStatus: ADEQUATE
+          storageUsedBytes: 1284500000000
+          lastVerifiedAt: 2000-01-23T04:56:07.000+00:00
+          region: eu-west-1
+        policiesSummary:
+        - decisionsLast24h: 45200
+          framework: GDPR
+          blockedLast24h: 42
+          policyName: eu-customer-data-gdpr
+          enforcementMode: BLOCK
+        - decisionsLast24h: 45200
+          framework: GDPR
+          blockedLast24h: 42
+          policyName: eu-customer-data-gdpr
+          enforcementMode: BLOCK
+        violations:
+        - severity: CRITICAL
+          policyName: eu-customer-data-gdpr
+          affectedRecords: 1200000
+          detectedAt: 2000-01-23T04:56:07.000+00:00
+          detail: 1.2M EU PII records found in us-east-1 replica set.
+          remediationStatus: IN_PROGRESS
+          violationId: b1a2c3d4-e5f6-7890-1234-567890abcdef
+        - severity: CRITICAL
+          policyName: eu-customer-data-gdpr
+          affectedRecords: 1200000
+          detectedAt: 2000-01-23T04:56:07.000+00:00
+          detail: 1.2M EU PII records found in us-east-1 replica set.
+          remediationStatus: IN_PROGRESS
+          violationId: b1a2c3d4-e5f6-7890-1234-567890abcdef
+        generatedAt: 2000-01-23T04:56:07.000+00:00
+        totalComplianceScore: 94.5
+      properties:
+        generatedAt:
+          format: date-time
+          type: string
+        totalComplianceScore:
+          description: Overall residency compliance health.
+          example: 94.5
+          maximum: 100
+          minimum: 0
+          type: number
+        regions:
+          items:
+            $ref: "#/components/schemas/ResidencyMap_regions_inner"
+          type: array
+        violations:
+          description: Currently active residency violations.
+          items:
+            $ref: "#/components/schemas/ResidencyMap_violations_inner"
+          type: array
+        policiesSummary:
+          items:
+            $ref: "#/components/schemas/ResidencyMap_policiesSummary_inner"
+          type: array
+      required:
+      - generatedAt
+      - regions
+      - totalComplianceScore
+      type: object
+    ResidencyEvidence:
+      example:
+        summary:
+          totalDecisions: 1820000
+          warnedDecisions: 0
+          blockedDecisions: 400
+          allowedDecisions: 1819600
+          totalDataSubjectsCovered: 450000
+          countriesCovered:
+          - DE
+          - FR
+          - IT
+          - ES
+          - NL
+        periodTo: 2000-01-23
+        completedAt: 2000-01-23T04:56:07.000+00:00
+        errorMessage: errorMessage
+        periodFrom: 2000-01-23
+        transferMechanisms:
+        - destinationCountries:
+          - US
+          - GB
+          - CH
+          approvalReference: DPA-2026-001
+          mechanism: STANDARD_CONTRACTUAL_CLAUSES
+          usageCount: 12840
+        - destinationCountries:
+          - US
+          - GB
+          - CH
+          approvalReference: DPA-2026-001
+          mechanism: STANDARD_CONTRACTUAL_CLAUSES
+          usageCount: 12840
+        evidenceVaultReference: compliance-evidence://gdpr/Art44/residency-q3-2026
+        framework: GDPR
+        requestedAt: 2000-01-23T04:56:07.000+00:00
+        evidenceId: d1a2c3d4-e5f6-7890-1234-567890abcdef
+        reportDownloadUrl: https://storage.googleapis.com/residency-evidence/gdpr-2026-q3.pdf
+        reportSignature:
+          sha256Hash: 3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b
+          signedBy: dpo@forgesphere.example.com
+          signedAt: 2000-01-23T04:56:07.000+00:00
+          algorithm: SHA256_RSA
+        progressPercent: 45
+        outputFormat: PDF
+        status: COLLECTING
+      properties:
+        evidenceId:
+          example: d1a2c3d4-e5f6-7890-1234-567890abcdef
+          format: uuid
+          type: string
+        framework:
+          enum:
+          - GDPR
+          - SCHREMS_II
+          - DPDP_INDIA
+          - HIPAA
+          - PIPL_CHINA
+          - LGPD_BRAZIL
+          - PIPEDA_CANADA
+          - APPI_JAPAN
+          - POPIA_SOUTH_AFRICA
+          example: GDPR
+          type: string
+        periodFrom:
+          format: date
+          type: string
+        periodTo:
+          format: date
+          type: string
+        status:
+          enum:
+          - QUEUED
+          - COLLECTING
+          - VERIFYING
+          - SIGNING
+          - COMPLETED
+          - FAILED
+          example: COLLECTING
+          type: string
+        requestedAt:
+          format: date-time
+          type: string
+        completedAt:
+          format: date-time
+          type: string
+        progressPercent:
+          example: 45
+          maximum: 100
+          minimum: 0
+          type: integer
+        outputFormat:
+          enum:
+          - PDF
+          - CSV
+          - JSON
+          - XLSX
+          example: PDF
+          type: string
+        summary:
+          $ref: "#/components/schemas/ResidencyEvidence_summary"
+        transferMechanisms:
+          items:
+            $ref: "#/components/schemas/ResidencyEvidence_transferMechanisms_inner"
+          type: array
+        reportDownloadUrl:
+          example: https://storage.googleapis.com/residency-evidence/gdpr-2026-q3.pdf
+          type: string
+        reportSignature:
+          $ref: "#/components/schemas/ResidencyEvidence_reportSignature"
+        evidenceVaultReference:
+          example: compliance-evidence://gdpr/Art44/residency-q3-2026
+          type: string
+        errorMessage:
+          type: string
+      required:
+      - evidenceId
+      - framework
+      - outputFormat
+      - periodFrom
+      - periodTo
+      - requestedAt
+      - status
+      type: object
+    ErrorResponse:
+      properties:
+        status:
+          example: 409
+          type: integer
+        errorCode:
+          example: POLICY_ALREADY_EXISTS
+          type: string
+        message:
+          example: A residency policy with name 'eu-customer-data-gdpr' already exists.
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        path:
+          example: /v1/policies
+          type: string
+      required:
+      - message
+      - path
+      - status
+      - timestamp
+      type: object
+    defineResidencyPolicy_request_allowedTransfers_inner:
+      properties:
+        destinationRegion:
+          example: us-east-1
+          type: string
+        mechanism:
+          enum:
+          - STANDARD_CONTRACTUAL_CLAUSES
+          - BINDING_CORPORATE_RULES
+          - ADEQUACY_DECISION
+          - EXPLICIT_CONSENT
+          - CONTRACT_NECESSITY
+          example: STANDARD_CONTRACTUAL_CLAUSES
+          type: string
+        approvalReference:
+          example: DPA-2026-001
+          type: string
+      required:
+      - destinationRegion
+      - mechanism
+      type: object
+    defineResidencyPolicy_request:
+      properties:
+        policyName:
+          example: eu-customer-data-gdpr
+          type: string
+        description:
+          example: EU customer PII must remain in EU regions per GDPR Art. 44-50.
+          type: string
+        dataClassification:
+          enum:
+          - PII
+          - PHI
+          - PCI
+          - FINANCIAL
+          - CUSTOMER_CONTENT
+          - AUTHENTICATION
+          - TELEMETRY
+          - PUBLIC
+          - INTERNAL
+          example: PII
+          type: string
+        regulatoryFramework:
+          enum:
+          - GDPR
+          - SCHREMS_II
+          - DPDP_INDIA
+          - HIPAA
+          - PIPL_CHINA
+          - LGPD_BRAZIL
+          - PIPEDA_CANADA
+          - APPI_JAPAN
+          - POPIA_SOUTH_AFRICA
+          - NONE
+          example: GDPR
+          type: string
+        allowedRegions:
+          description: Cloud regions where this data may reside or be processed.
+          example:
+          - eu-west-1
+          - eu-central-1
+          - eu-north-1
+          items:
+            type: string
+          type: array
+        prohibitedRegions:
+          description: Explicitly blocked regions (overrides allowlist).
+          example:
+          - us-east-1
+          - us-west-2
+          - ap-south-1
+          items:
+            type: string
+          type: array
+        allowedTransfers:
+          description: Cross-border transfer mechanisms permitted under this policy.
+          items:
+            $ref: "#/components/schemas/defineResidencyPolicy_request_allowedTransfers_inner"
+          type: array
+        enforcementMode:
+          description: BLOCK = reject; WARN = allow + alert; AUDIT_ONLY = log only;
+            AUTO_ROUTE = redirect to allowed region.
+          enum:
+          - BLOCK
+          - AUDIT_ONLY
+          - WARN
+          - AUTO_ROUTE
+          example: BLOCK
+          type: string
+        dataSubjectCountries:
+          description: Which countries' citizens this policy covers.
+          example:
+          - DE
+          - FR
+          - IT
+          - ES
+          - NL
+          items:
+            type: string
+          type: array
+        owner:
+          example: privacy-office@forgesphere.example.com
+          type: string
+        approvers:
+          example:
+          - dpo@forgesphere.example.com
+          - legal@forgesphere.example.com
+          items:
+            type: string
+          type: array
+        retentionDays:
+          description: Optional. Days to retain residency evidence.
+          example: 2555
+          type: integer
+        tags:
+          example:
+          - gdpr
+          - pii
+          - eu
+          - schrems-ii
+          items:
+            type: string
+          type: array
+      required:
+      - allowedRegions
+      - dataClassification
+      - enforcementMode
+      - policyName
+      - regulatoryFramework
+      type: object
+    checkDataMovement_request_subject:
+      description: Which data subject/tenant/record this concerns.
+      properties:
+        tenantId:
+          example: tenant-acme-eu
+          type: string
+        dataSubjectCountry:
+          description: ISO country code of data subject.
+          example: DE
+          type: string
+        recordCount:
+          example: 45000
+          type: integer
+      type: object
+    checkDataMovement_request:
+      properties:
+        dataClassification:
+          enum:
+          - PII
+          - PHI
+          - PCI
+          - FINANCIAL
+          - CUSTOMER_CONTENT
+          - AUTHENTICATION
+          - TELEMETRY
+          - PUBLIC
+          - INTERNAL
+          example: PII
+          type: string
+        sourceRegion:
+          example: eu-west-1
+          type: string
+        destinationRegion:
+          example: us-east-1
+          type: string
+        operation:
+          enum:
+          - REPLICATION
+          - BACKUP
+          - CACHE_POPULATE
+          - ANALYTICS_EXPORT
+          - ML_TRAINING
+          - CDN_PUSH
+          - LOG_SHIPPING
+          - DATA_WAREHOUSE_LOAD
+          - THIRD_PARTY_TRANSFER
+          - API_READ
+          - API_WRITE
+          example: ML_TRAINING
+          type: string
+        subject:
+          $ref: "#/components/schemas/checkDataMovement_request_subject"
+        purpose:
+          example: Fraud detection model training
+          type: string
+        requestingService:
+          example: ml-platform
+          type: string
+        correlationId:
+          example: a1b2c3d4-e5f6-7890-1234-567890abcdef
+          format: uuid
+          type: string
+      required:
+      - dataClassification
+      - destinationRegion
+      - operation
+      - sourceRegion
+      - subject
+      type: object
+    generateAuditEvidence_request:
+      properties:
+        framework:
+          enum:
+          - GDPR
+          - SCHREMS_II
+          - DPDP_INDIA
+          - HIPAA
+          - PIPL_CHINA
+          - LGPD_BRAZIL
+          - PIPEDA_CANADA
+          - APPI_JAPAN
+          - POPIA_SOUTH_AFRICA
+          example: GDPR
+          type: string
+        periodFrom:
+          example: 2026-01-01
+          format: date
+          type: string
+        periodTo:
+          example: 2026-09-30
+          format: date
+          type: string
+        outputFormat:
+          default: PDF
+          enum:
+          - PDF
+          - CSV
+          - JSON
+          - XLSX
+          example: PDF
+          type: string
+        includeRawDecisions:
+          default: false
+          description: Attach raw allow/block decisions as appendix.
+          example: false
+          type: boolean
+        includeTransferMechanisms:
+          default: true
+          description: Document SCC/BCC/adequacy mechanisms used.
+          example: true
+          type: boolean
+        signReport:
+          default: true
+          example: true
+          type: boolean
+      required:
+      - framework
+      - outputFormat
+      - periodFrom
+      - periodTo
+      type: object
+    ResidencyPolicy_allowedTransfers_inner:
+      example:
+        destinationRegion: us-east-1
+        approvalReference: DPA-2026-001
+        mechanism: STANDARD_CONTRACTUAL_CLAUSES
+      properties:
+        destinationRegion:
+          example: us-east-1
+          type: string
+        mechanism:
+          enum:
+          - STANDARD_CONTRACTUAL_CLAUSES
+          - BINDING_CORPORATE_RULES
+          - ADEQUACY_DECISION
+          - EXPLICIT_CONSENT
+          - CONTRACT_NECESSITY
+          example: STANDARD_CONTRACTUAL_CLAUSES
+          type: string
+        approvalReference:
+          example: DPA-2026-001
+          type: string
+      type: object
+    MovementDecision_legalBasis:
+      example:
+        policyId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+        policyName: eu-customer-data-gdpr
+        regulationArticle: GDPR Art. 44 — General principle for transfers
+        reasoning: EU PII cannot be transferred to us-east-1 without Standard Contractual
+          Clauses. No valid SCC found in policy.
+        regulatoryFramework: GDPR
+      properties:
+        policyId:
+          example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          format: uuid
+          type: string
+        policyName:
+          example: eu-customer-data-gdpr
+          type: string
+        regulatoryFramework:
+          enum:
+          - GDPR
+          - SCHREMS_II
+          - DPDP_INDIA
+          - HIPAA
+          - PIPL_CHINA
+          - LGPD_BRAZIL
+          - PIPEDA_CANADA
+          - APPI_JAPAN
+          - POPIA_SOUTH_AFRICA
+          - NONE
+          example: GDPR
+          type: string
+        regulationArticle:
+          example: GDPR Art. 44 — General principle for transfers
+          type: string
+        reasoning:
+          example: EU PII cannot be transferred to us-east-1 without Standard Contractual
+            Clauses. No valid SCC found in policy.
+          type: string
+      type: object
+    MovementDecision_suggestedAlternatives_inner:
+      example:
+        alternative: USE_ALLOWED_REGION
+        costImpactUSDPerMonth: 120.0
+        detail: Route ML training to eu-central-1 (already allowed).
+        latencyImpactMs: 15
+      properties:
+        alternative:
+          example: USE_ALLOWED_REGION
+          type: string
+        detail:
+          example: Route ML training to eu-central-1 (already allowed).
+          type: string
+        latencyImpactMs:
+          example: 15
+          type: integer
+        costImpactUSDPerMonth:
+          example: 120.0
+          format: double
+          type: number
+      type: object
+    MovementDecision_metadata:
+      example:
+        destinationRegion: us-east-1
+        dataClassification: PII
+        requestingService: ml-platform
+        recordCount: 45000
+        sourceRegion: eu-west-1
+        operation: ML_TRAINING
+      properties:
+        dataClassification:
+          example: PII
+          type: string
+        sourceRegion:
+          example: eu-west-1
+          type: string
+        destinationRegion:
+          example: us-east-1
+          type: string
+        operation:
+          example: ML_TRAINING
+          type: string
+        requestingService:
+          example: ml-platform
+          type: string
+        recordCount:
+          example: 45000
+          type: integer
+      type: object
+    ResidencyMap_regions_inner:
+      example:
+        provider: AWS
+        dataClassificationCounts:
+          PII: 45000000
+          PCI: 12000000
+          FINANCIAL: 8500000
+        jurisdiction: European Union
+        activePolicies:
+        - eu-customer-data-gdpr
+        complianceStatus: COMPLIANT
+        adequacyStatus: ADEQUATE
+        storageUsedBytes: 1284500000000
+        lastVerifiedAt: 2000-01-23T04:56:07.000+00:00
+        region: eu-west-1
+      properties:
+        region:
+          example: eu-west-1
+          type: string
+        provider:
+          enum:
+          - AWS
+          - GCP
+          - AZURE
+          - ON_PREM
+          - OTHER
+          example: AWS
+          type: string
+        jurisdiction:
+          description: Legal jurisdiction.
+          example: European Union
+          type: string
+        adequacyStatus:
+          enum:
+          - ADEQUATE
+          - PARTIAL
+          - NOT_ADEQUATE
+          - NOT_APPLICABLE
+          example: ADEQUATE
+          type: string
+        storageUsedBytes:
+          example: 1284500000000
+          type: integer
+        dataClassificationCounts:
+          additionalProperties:
+            type: integer
+          example:
+            PII: 45000000
+            PCI: 12000000
+            FINANCIAL: 8500000
+          type: object
+        activePolicies:
+          example:
+          - eu-customer-data-gdpr
+          items:
+            type: string
+          type: array
+        complianceStatus:
+          enum:
+          - COMPLIANT
+          - NON_COMPLIANT
+          - UNDER_REVIEW
+          - EXEMPT
+          example: COMPLIANT
+          type: string
+        lastVerifiedAt:
+          format: date-time
+          type: string
+      required:
+      - dataClassificationCounts
+      - region
+      - storageUsedBytes
+      type: object
+    ResidencyMap_violations_inner:
+      example:
+        severity: CRITICAL
+        policyName: eu-customer-data-gdpr
+        affectedRecords: 1200000
+        detectedAt: 2000-01-23T04:56:07.000+00:00
+        detail: 1.2M EU PII records found in us-east-1 replica set.
+        remediationStatus: IN_PROGRESS
+        violationId: b1a2c3d4-e5f6-7890-1234-567890abcdef
+      properties:
+        violationId:
+          example: b1a2c3d4-e5f6-7890-1234-567890abcdef
+          format: uuid
+          type: string
+        severity:
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          - CRITICAL
+          example: CRITICAL
+          type: string
+        policyName:
+          example: eu-customer-data-gdpr
+          type: string
+        detail:
+          example: 1.2M EU PII records found in us-east-1 replica set.
+          type: string
+        affectedRecords:
+          example: 1200000
+          type: integer
+        detectedAt:
+          format: date-time
+          type: string
+        remediationStatus:
+          enum:
+          - OPEN
+          - IN_PROGRESS
+          - RESOLVED
+          example: IN_PROGRESS
+          type: string
+      required:
+      - detail
+      - severity
+      - violationId
+      type: object
+    ResidencyMap_policiesSummary_inner:
+      example:
+        decisionsLast24h: 45200
+        framework: GDPR
+        blockedLast24h: 42
+        policyName: eu-customer-data-gdpr
+        enforcementMode: BLOCK
+      properties:
+        policyName:
+          example: eu-customer-data-gdpr
+          type: string
+        framework:
+          example: GDPR
+          type: string
+        enforcementMode:
+          example: BLOCK
+          type: string
+        decisionsLast24h:
+          example: 45200
+          type: integer
+        blockedLast24h:
+          example: 42
+          type: integer
+      type: object
+    ResidencyEvidence_summary:
+      example:
+        totalDecisions: 1820000
+        warnedDecisions: 0
+        blockedDecisions: 400
+        allowedDecisions: 1819600
+        totalDataSubjectsCovered: 450000
+        countriesCovered:
+        - DE
+        - FR
+        - IT
+        - ES
+        - NL
+      properties:
+        totalDecisions:
+          example: 1820000
+          type: integer
+        allowedDecisions:
+          example: 1819600
+          type: integer
+        blockedDecisions:
+          example: 400
+          type: integer
+        warnedDecisions:
+          example: 0
+          type: integer
+        totalDataSubjectsCovered:
+          example: 450000
+          type: integer
+        countriesCovered:
+          example:
+          - DE
+          - FR
+          - IT
+          - ES
+          - NL
+          items:
+            type: string
+          type: array
+      type: object
+    ResidencyEvidence_transferMechanisms_inner:
+      example:
+        destinationCountries:
+        - US
+        - GB
+        - CH
+        approvalReference: DPA-2026-001
+        mechanism: STANDARD_CONTRACTUAL_CLAUSES
+        usageCount: 12840
+      properties:
+        mechanism:
+          example: STANDARD_CONTRACTUAL_CLAUSES
+          type: string
+        destinationCountries:
+          example:
+          - US
+          - GB
+          - CH
+          items:
+            type: string
+          type: array
+        approvalReference:
+          example: DPA-2026-001
+          type: string
+        usageCount:
+          example: 12840
+          type: integer
+      type: object
+    ResidencyEvidence_reportSignature:
+      example:
+        sha256Hash: 3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b
+        signedBy: dpo@forgesphere.example.com
+        signedAt: 2000-01-23T04:56:07.000+00:00
+        algorithm: SHA256_RSA
+      properties:
+        algorithm:
+          example: SHA256_RSA
+          type: string
+        sha256Hash:
+          example: 3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b
+          type: string
+        signedBy:
+          example: dpo@forgesphere.example.com
+          type: string
+        signedAt:
+          format: date-time
+          type: string
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      description: "Privacy, legal, or admin JWT."
+      scheme: bearer
+      type: http
