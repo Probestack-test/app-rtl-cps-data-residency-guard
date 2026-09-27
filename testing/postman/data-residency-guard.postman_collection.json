@@ -1,0 +1,729 @@
+{
+  "info" : {
+    "_postman_id" : "8c7dbece-9271-4fe2-9d40-150a16194c59",
+    "name" : "Data Residency Guard",
+    "description" : "Generated Postman collection for data-residency-guard",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable" : [ {
+    "key" : "baseUrl",
+    "value" : "http://localhost:8080",
+    "type" : "string"
+  }, {
+    "key" : "bearerToken",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "resourceId",
+    "value" : "sample-id",
+    "type" : "string"
+  }, {
+    "key" : "clientId",
+    "value" : "generated-service-client",
+    "type" : "string"
+  }, {
+    "key" : "clientSecret",
+    "value" : "change-me",
+    "type" : "string"
+  }, {
+    "key" : "scope",
+    "value" : "api.read api.write",
+    "type" : "string"
+  } ],
+  "item" : [ {
+    "name" : "Health",
+    "item" : [ {
+      "name" : "Health",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/health",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "health" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/health",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "health" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Liveness",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/health/liveness",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "health", "liveness" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/health/liveness",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "health", "liveness" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Readiness",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/health/readiness",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "health", "readiness" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/health/readiness",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "health", "readiness" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Metrics",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/metrics",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "metrics" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/metrics",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "metrics" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Prometheus",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/prometheus",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "prometheus" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/prometheus",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "prometheus" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    } ]
+  }, {
+    "name" : "Security",
+    "item" : [ {
+      "name" : "Get OAuth2 Token",
+      "request" : {
+        "auth" : {
+          "type" : "basic",
+          "basic" : [ {
+            "key" : "username",
+            "value" : "{{clientId}}",
+            "type" : "string"
+          }, {
+            "key" : "password",
+            "value" : "{{clientSecret}}",
+            "type" : "string"
+          } ]
+        },
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/x-www-form-urlencoded"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "body" : {
+          "mode" : "urlencoded",
+          "urlencoded" : [ {
+            "key" : "grant_type",
+            "value" : "client_credentials",
+            "type" : "text"
+          }, {
+            "key" : "scope",
+            "value" : "{{scope}}",
+            "type" : "text"
+          } ]
+        },
+        "url" : {
+          "raw" : "{{baseUrl}}/oauth2/token",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "oauth2", "token" ]
+        }
+      },
+      "event" : [ {
+        "listen" : "test",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "const json = pm.response.json();", "if (json.access_token) {", "  pm.collectionVariables.set(\"bearerToken\", json.access_token);", "}" ]
+        }
+      } ]
+    } ]
+  }, {
+    "name" : "Residency",
+    "item" : [ {
+      "name" : "Define a new data residency policy",
+      "request" : {
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/policies",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "policies" ]
+        },
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\n  \"policyName\" : \"eu-customer-data-gdpr\",\n  \"description\" : \"EU customer PII must remain in EU regions per GDPR Art. 44-50.\",\n  \"dataClassification\" : \"PII\",\n  \"regulatoryFramework\" : \"GDPR\",\n  \"allowedRegions\" : [ \"eu-west-1\", \"eu-central-1\", \"eu-north-1\" ],\n  \"prohibitedRegions\" : [ \"us-east-1\", \"us-west-2\", \"ap-south-1\" ],\n  \"allowedTransfers\" : \"sample-allowedTransfers\",\n  \"enforcementMode\" : \"BLOCK\",\n  \"dataSubjectCountries\" : [ \"DE\", \"FR\", \"IT\", \"ES\", \"NL\" ],\n  \"owner\" : \"privacy-office@forgesphere.example.com\",\n  \"approvers\" : [ \"dpo@forgesphere.example.com\", \"legal@forgesphere.example.com\" ],\n  \"retentionDays\" : 2555,\n  \"tags\" : [ \"gdpr\", \"pii\", \"eu\", \"schrems-ii\" ]\n}",
+          "options" : {
+            "raw" : {
+              "language" : "json"
+            }
+          }
+        }
+      },
+      "response" : [ {
+        "name" : "Created",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/policies",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "policies" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"policyName\" : \"eu-customer-data-gdpr\",\n  \"description\" : \"EU customer PII must remain in EU regions per GDPR Art. 44-50.\",\n  \"dataClassification\" : \"PII\",\n  \"regulatoryFramework\" : \"GDPR\",\n  \"allowedRegions\" : [ \"eu-west-1\", \"eu-central-1\", \"eu-north-1\" ],\n  \"prohibitedRegions\" : [ \"us-east-1\", \"us-west-2\", \"ap-south-1\" ],\n  \"allowedTransfers\" : \"sample-allowedTransfers\",\n  \"enforcementMode\" : \"BLOCK\",\n  \"dataSubjectCountries\" : [ \"DE\", \"FR\", \"IT\", \"ES\", \"NL\" ],\n  \"owner\" : \"privacy-office@forgesphere.example.com\",\n  \"approvers\" : [ \"dpo@forgesphere.example.com\", \"legal@forgesphere.example.com\" ],\n  \"retentionDays\" : 2555,\n  \"tags\" : [ \"gdpr\", \"pii\", \"eu\", \"schrems-ii\" ]\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Created",
+        "code" : 201,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"policyId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n  \"policyName\" : \"eu-customer-data-gdpr\",\n  \"description\" : \"EU customer PII must remain in EU regions per GDPR Art. 44-50.\",\n  \"dataClassification\" : \"PII\",\n  \"regulatoryFramework\" : \"GDPR\",\n  \"allowedRegions\" : [ \"eu-west-1\", \"eu-central-1\", \"eu-north-1\" ],\n  \"prohibitedRegions\" : [ \"us-east-1\", \"us-west-2\" ],\n  \"allowedTransfers\" : [ {\n    \"destinationRegion\" : \"us-east-1\",\n    \"approvalReference\" : \"DPA-2026-001\",\n    \"mechanism\" : \"STANDARD_CONTRACTUAL_CLAUSES\"\n  }, {\n    \"destinationRegion\" : \"us-east-1\",\n    \"approvalReference\" : \"DPA-2026-001\",\n    \"mechanism\" : \"STANDARD_CONTRACTUAL_CLAUSES\"\n  } ],\n  \"enforcementMode\" : \"BLOCK\",\n  \"dataSubjectCountries\" : [ \"DE\", \"FR\", \"IT\", \"ES\", \"NL\" ],\n  \"status\" : \"ACTIVE\",\n  \"owner\" : \"privacy-office@forgesphere.example.com\",\n  \"approvers\" : [ \"approvers\", \"approvers\" ],\n  \"approvedBy\" : [ \"dpo@forgesphere.example.com\" ],\n  \"approvedAt\" : 948603367000,\n  \"retentionDays\" : 2555,\n  \"tags\" : [ \"gdpr\", \"pii\", \"eu\", \"schrems-ii\" ],\n  \"createdAt\" : 948603367000,\n  \"updatedAt\" : 948603367000,\n  \"enforcementCount30d\" : 342,\n  \"blockedCount30d\" : 47\n}"
+      }, {
+        "name" : "Bad Request",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/policies",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "policies" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"policyName\" : \"eu-customer-data-gdpr\",\n  \"description\" : \"EU customer PII must remain in EU regions per GDPR Art. 44-50.\",\n  \"dataClassification\" : \"PII\",\n  \"regulatoryFramework\" : \"GDPR\",\n  \"allowedRegions\" : [ \"eu-west-1\", \"eu-central-1\", \"eu-north-1\" ],\n  \"prohibitedRegions\" : [ \"us-east-1\", \"us-west-2\", \"ap-south-1\" ],\n  \"allowedTransfers\" : \"sample-allowedTransfers\",\n  \"enforcementMode\" : \"BLOCK\",\n  \"dataSubjectCountries\" : [ \"DE\", \"FR\", \"IT\", \"ES\", \"NL\" ],\n  \"owner\" : \"privacy-office@forgesphere.example.com\",\n  \"approvers\" : [ \"dpo@forgesphere.example.com\", \"legal@forgesphere.example.com\" ],\n  \"retentionDays\" : 2555,\n  \"tags\" : [ \"gdpr\", \"pii\", \"eu\", \"schrems-ii\" ]\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Bad Request",
+        "code" : 400,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-09-27T07:05:53.184870757Z\",\n  \"status\" : 400,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    }, {
+      "name" : "Check if a proposed data movement is allowed",
+      "request" : {
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/check",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "check" ]
+        },
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\n  \"dataClassification\" : \"PII\",\n  \"sourceRegion\" : \"eu-west-1\",\n  \"destinationRegion\" : \"us-east-1\",\n  \"operation\" : \"ML_TRAINING\",\n  \"subject\" : {\n    \"tenantId\" : \"tenant-acme-eu\",\n    \"dataSubjectCountry\" : \"DE\",\n    \"recordCount\" : 45000\n  },\n  \"purpose\" : \"Fraud detection model training\",\n  \"requestingService\" : \"ml-platform\",\n  \"correlationId\" : \"a1b2c3d4-e5f6-7890-1234-567890abcdef\"\n}",
+          "options" : {
+            "raw" : {
+              "language" : "json"
+            }
+          }
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/check",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "check" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"dataClassification\" : \"PII\",\n  \"sourceRegion\" : \"eu-west-1\",\n  \"destinationRegion\" : \"us-east-1\",\n  \"operation\" : \"ML_TRAINING\",\n  \"subject\" : {\n    \"tenantId\" : \"tenant-acme-eu\",\n    \"dataSubjectCountry\" : \"DE\",\n    \"recordCount\" : 45000\n  },\n  \"purpose\" : \"Fraud detection model training\",\n  \"requestingService\" : \"ml-platform\",\n  \"correlationId\" : \"a1b2c3d4-e5f6-7890-1234-567890abcdef\"\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"decisionId\" : \"a1b2c3d4-e5f6-7890-1234-567890abcdef\",\n  \"decision\" : \"BLOCK\",\n  \"legalBasis\" : {\n    \"policyId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n    \"policyName\" : \"eu-customer-data-gdpr\",\n    \"regulationArticle\" : \"GDPR Art. 44 — General principle for transfers\",\n    \"reasoning\" : \"EU PII cannot be transferred to us-east-1 without Standard Contractual Clauses. No valid SCC found in policy.\",\n    \"regulatoryFramework\" : \"GDPR\"\n  },\n  \"suggestedAlternatives\" : [ {\n    \"alternative\" : \"USE_ALLOWED_REGION\",\n    \"costImpactUSDPerMonth\" : 120.0,\n    \"detail\" : \"Route ML training to eu-central-1 (already allowed).\",\n    \"latencyImpactMs\" : 15\n  }, {\n    \"alternative\" : \"USE_ALLOWED_REGION\",\n    \"costImpactUSDPerMonth\" : 120.0,\n    \"detail\" : \"Route ML training to eu-central-1 (already allowed).\",\n    \"latencyImpactMs\" : 15\n  } ],\n  \"autoRoutedTo\" : \"eu-central-1\",\n  \"metadata\" : {\n    \"destinationRegion\" : \"us-east-1\",\n    \"dataClassification\" : \"PII\",\n    \"requestingService\" : \"ml-platform\",\n    \"recordCount\" : 45000,\n    \"sourceRegion\" : \"eu-west-1\",\n    \"operation\" : \"ML_TRAINING\"\n  },\n  \"auditReference\" : \"audit://residency/a1b2c3d4\",\n  \"evaluatedAt\" : 948603367000,\n  \"latencyMs\" : 14\n}"
+      }, {
+        "name" : "Bad Request",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/check",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "check" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"dataClassification\" : \"PII\",\n  \"sourceRegion\" : \"eu-west-1\",\n  \"destinationRegion\" : \"us-east-1\",\n  \"operation\" : \"ML_TRAINING\",\n  \"subject\" : {\n    \"tenantId\" : \"tenant-acme-eu\",\n    \"dataSubjectCountry\" : \"DE\",\n    \"recordCount\" : 45000\n  },\n  \"purpose\" : \"Fraud detection model training\",\n  \"requestingService\" : \"ml-platform\",\n  \"correlationId\" : \"a1b2c3d4-e5f6-7890-1234-567890abcdef\"\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Bad Request",
+        "code" : 400,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-09-27T07:05:53.187409385Z\",\n  \"status\" : 400,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    }, {
+      "name" : "Get a live map of where data resides across the platform",
+      "request" : {
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/map?dataClassification=PII&includeViolations=true&framework=GDPR",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "map" ],
+          "query" : [ {
+            "key" : "dataClassification",
+            "value" : "PII"
+          }, {
+            "key" : "includeViolations",
+            "value" : true
+          }, {
+            "key" : "framework",
+            "value" : "GDPR"
+          } ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/map?dataClassification=PII&includeViolations=true&framework=GDPR",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "map" ],
+            "query" : [ {
+              "key" : "dataClassification",
+              "value" : "PII"
+            }, {
+              "key" : "includeViolations",
+              "value" : true
+            }, {
+              "key" : "framework",
+              "value" : "GDPR"
+            } ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"generatedAt\" : 948603367000,\n  \"totalComplianceScore\" : 94.5,\n  \"regions\" : [ {\n    \"provider\" : \"AWS\",\n    \"dataClassificationCounts\" : {\n      \"PII\" : 45000000,\n      \"PCI\" : 12000000,\n      \"FINANCIAL\" : 8500000\n    },\n    \"jurisdiction\" : \"European Union\",\n    \"activePolicies\" : [ \"eu-customer-data-gdpr\" ],\n    \"complianceStatus\" : \"COMPLIANT\",\n    \"adequacyStatus\" : \"ADEQUATE\",\n    \"storageUsedBytes\" : 1284500000000,\n    \"lastVerifiedAt\" : 948603367000,\n    \"region\" : \"eu-west-1\"\n  }, {\n    \"provider\" : \"AWS\",\n    \"dataClassificationCounts\" : {\n      \"PII\" : 45000000,\n      \"PCI\" : 12000000,\n      \"FINANCIAL\" : 8500000\n    },\n    \"jurisdiction\" : \"European Union\",\n    \"activePolicies\" : [ \"eu-customer-data-gdpr\" ],\n    \"complianceStatus\" : \"COMPLIANT\",\n    \"adequacyStatus\" : \"ADEQUATE\",\n    \"storageUsedBytes\" : 1284500000000,\n    \"lastVerifiedAt\" : 948603367000,\n    \"region\" : \"eu-west-1\"\n  } ],\n  \"violations\" : [ {\n    \"severity\" : \"CRITICAL\",\n    \"policyName\" : \"eu-customer-data-gdpr\",\n    \"affectedRecords\" : 1200000,\n    \"detectedAt\" : 948603367000,\n    \"detail\" : \"1.2M EU PII records found in us-east-1 replica set.\",\n    \"remediationStatus\" : \"IN_PROGRESS\",\n    \"violationId\" : \"b1a2c3d4-e5f6-7890-1234-567890abcdef\"\n  }, {\n    \"severity\" : \"CRITICAL\",\n    \"policyName\" : \"eu-customer-data-gdpr\",\n    \"affectedRecords\" : 1200000,\n    \"detectedAt\" : 948603367000,\n    \"detail\" : \"1.2M EU PII records found in us-east-1 replica set.\",\n    \"remediationStatus\" : \"IN_PROGRESS\",\n    \"violationId\" : \"b1a2c3d4-e5f6-7890-1234-567890abcdef\"\n  } ],\n  \"policiesSummary\" : [ {\n    \"decisionsLast24h\" : 45200,\n    \"framework\" : \"GDPR\",\n    \"blockedLast24h\" : 42,\n    \"policyName\" : \"eu-customer-data-gdpr\",\n    \"enforcementMode\" : \"BLOCK\"\n  }, {\n    \"decisionsLast24h\" : 45200,\n    \"framework\" : \"GDPR\",\n    \"blockedLast24h\" : 42,\n    \"policyName\" : \"eu-customer-data-gdpr\",\n    \"enforcementMode\" : \"BLOCK\"\n  } ]\n}"
+      }, {
+        "name" : "Internal Server Error",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/map?dataClassification=PII&includeViolations=true&framework=GDPR",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "map" ],
+            "query" : [ {
+              "key" : "dataClassification",
+              "value" : "PII"
+            }, {
+              "key" : "includeViolations",
+              "value" : true
+            }, {
+              "key" : "framework",
+              "value" : "GDPR"
+            } ]
+          }
+        },
+        "status" : "Internal Server Error",
+        "code" : 500,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-09-27T07:05:53.188853292Z\",\n  \"status\" : 500,\n  \"code\" : \"internal_error\",\n  \"userMessage\" : \"Unexpected service error\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    }, {
+      "name" : "Generate audit-grade residency compliance evidence",
+      "request" : {
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/audit/evidence",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "audit", "evidence" ]
+        },
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\n  \"framework\" : \"GDPR\",\n  \"periodFrom\" : 1767225600000,\n  \"periodTo\" : 1790726400000,\n  \"outputFormat\" : \"PDF\",\n  \"includeRawDecisions\" : false,\n  \"includeTransferMechanisms\" : true,\n  \"signReport\" : true\n}",
+          "options" : {
+            "raw" : {
+              "language" : "json"
+            }
+          }
+        }
+      },
+      "response" : [ {
+        "name" : "Accepted",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/audit/evidence",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "audit", "evidence" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"framework\" : \"GDPR\",\n  \"periodFrom\" : 1767225600000,\n  \"periodTo\" : 1790726400000,\n  \"outputFormat\" : \"PDF\",\n  \"includeRawDecisions\" : false,\n  \"includeTransferMechanisms\" : true,\n  \"signReport\" : true\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Accepted",
+        "code" : 202,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"evidenceId\" : \"d1a2c3d4-e5f6-7890-1234-567890abcdef\",\n  \"framework\" : \"GDPR\",\n  \"periodFrom\" : 948585600000,\n  \"periodTo\" : 948585600000,\n  \"status\" : \"COLLECTING\",\n  \"requestedAt\" : 948603367000,\n  \"completedAt\" : 948603367000,\n  \"progressPercent\" : 45,\n  \"outputFormat\" : \"PDF\",\n  \"summary\" : {\n    \"totalDecisions\" : 1820000,\n    \"warnedDecisions\" : 0,\n    \"blockedDecisions\" : 400,\n    \"allowedDecisions\" : 1819600,\n    \"totalDataSubjectsCovered\" : 450000,\n    \"countriesCovered\" : [ \"DE\", \"FR\", \"IT\", \"ES\", \"NL\" ]\n  },\n  \"transferMechanisms\" : [ {\n    \"destinationCountries\" : [ \"US\", \"GB\", \"CH\" ],\n    \"approvalReference\" : \"DPA-2026-001\",\n    \"mechanism\" : \"STANDARD_CONTRACTUAL_CLAUSES\",\n    \"usageCount\" : 12840\n  }, {\n    \"destinationCountries\" : [ \"US\", \"GB\", \"CH\" ],\n    \"approvalReference\" : \"DPA-2026-001\",\n    \"mechanism\" : \"STANDARD_CONTRACTUAL_CLAUSES\",\n    \"usageCount\" : 12840\n  } ],\n  \"reportDownloadUrl\" : \"https://storage.googleapis.com/residency-evidence/gdpr-2026-q3.pdf\",\n  \"reportSignature\" : {\n    \"sha256Hash\" : \"3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b\",\n    \"signedBy\" : \"dpo@forgesphere.example.com\",\n    \"signedAt\" : 948603367000,\n    \"algorithm\" : \"SHA256_RSA\"\n  },\n  \"evidenceVaultReference\" : \"compliance-evidence://gdpr/Art44/residency-q3-2026\",\n  \"errorMessage\" : \"errorMessage\"\n}"
+      }, {
+        "name" : "Bad Request",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/audit/evidence",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "audit", "evidence" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"framework\" : \"GDPR\",\n  \"periodFrom\" : 1767225600000,\n  \"periodTo\" : 1790726400000,\n  \"outputFormat\" : \"PDF\",\n  \"includeRawDecisions\" : false,\n  \"includeTransferMechanisms\" : true,\n  \"signReport\" : true\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Bad Request",
+        "code" : 400,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-09-27T07:05:53.189464561Z\",\n  \"status\" : 400,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    } ]
+  } ]
+}
